@@ -15,13 +15,15 @@ const rechargeCallback = (bot, callbackQuery, valor) => {
         if(valor >= 5){
 
             updateRecharge(callbackQuery, valor);
-
-            bot.editMessageText(`🔰 Escolha o valor para recarregar, depois selecione a <b>opção de pagamento.</b>\n\n 💰 Valor: <b>R$ ${formataNumero(valor)}</b>`, {
+            console.log(valor);
+            console.log(typeof valor);
+            bot.editMessageText(`🔰 Escolha o valor para recarregar, depois selecione a <b>opção de pagamento.</b>\n\n 💰 Valor: <b>R$ ${formataNumero(Number(valor))}</b>`, {
             chat_id: callbackQuery.message.chat.id,
             message_id: callbackQuery.message.message_id,
             reply_markup: rechargeKeyboard,
             parse_mode: 'html'
             });
+
 
         } else {
 

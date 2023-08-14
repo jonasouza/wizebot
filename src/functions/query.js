@@ -74,24 +74,25 @@ const updateRecharge = (callbackQuery, value) => {
 }
 
 const rechargeValue = (callbackQuery) => {
-
     const connection = connect();
     const selectQuery = `SELECT * FROM recharge_value WHERE chat_id = ${callbackQuery.message.chat.id} AND message_id = ${callbackQuery.message.message_id} LIMIT 1`;
 
     return new Promise((resolve, reject) => {
         connection.query(selectQuery, (error, results) => {
-          if (error) {
-            console.log(error);
-            reject(error);
-          } else {
-            resolve(results[0].value);
-          }
+            if (error) {
+                console.log(error);
+                reject(error);
+            } else {
+                if (results && results[0] && results[0].value !== undefined) {
+                    resolve(Number(results[0].value));
+                } else {
+                    reject(new Error("No results found or value is undefined"));
+                }
+            }
+            connection.end();
         });
-    
-        connection.end();
-      });
-
-}
+    });
+};
 
 const myBalance = (msg) => {
 
@@ -291,5 +292,8 @@ const getAllServices = () => {
   });
 
 }
+
+
+
 
 export { startBot, createRecharge, myBalance, rechargeValue, updateRecharge, createPayment, cancelPaymentQuery, searchPaymentQuery, myOperator, updateMyOperator, getAllServices, myUserQuery };
